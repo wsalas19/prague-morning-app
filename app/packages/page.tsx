@@ -41,7 +41,6 @@ const PackagesPage = () => {
     }));
     setPackages(selectedPackages);
   };
-  console.log('packages', packages);
 
   return (
     <section className={styles['packages_page']}>

@@ -34,7 +34,6 @@ const Login = () => {
 
   const dispatch: AppDispatch = useDispatch();
   const loading = useAppSelector((state) => state.user.loading);
-  console.log(loading);
 
   const onSubmit: SubmitHandler<Inputs> = async (values: Inputs) => {
     const userBody: Inputs = {
