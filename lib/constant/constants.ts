@@ -487,13 +487,15 @@ export const CURRENCY: string[] = [
 ];
 
 export const SALARY_DETAILS = ["Year", "Month", "Week"];
-export const EDUCATION = ["High School", "Master"];
+export const EDUCATION = ["High School", "Master", "PhD", "Bachelor", "College", "Coursework"];
 export const COMPANY_SIZE = [
 	"10,000+ Employees",
 	"5,000+ Employees",
 	"1,000+ Employees",
 	"500+ Employees",
 ];
+
+export const BACKEND_URL = "https://prague-morning-backend.vercel.app/api";
 
 // REGEXPS
 export const emailValidationRegexp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;

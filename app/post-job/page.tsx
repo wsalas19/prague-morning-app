@@ -1,6 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Stepper from "@/lib/components/stepper/stepper";
+import React, { useState } from "react";
 import styles from "./postJob.module.scss";
 import { SubmitHandler, useForm } from "react-hook-form";
 import Input from "@/lib/components/input/input";
@@ -22,7 +21,6 @@ import { addNewJob, setJobDetails } from "../../lib/features/jobSlice/jobSlice";
 import { useRouter } from "next/navigation";
 import { selectJobDetails } from "../../lib/selectors/selectors";
 import { batch } from "react-redux";
-import { throttle } from "@/lib/utils/throttle";
 
 interface Inputs {
 	jobTitle: string;
@@ -43,12 +41,10 @@ interface Inputs {
 }
 const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), { ssr: false });
 const PostJob = () => {
-	const [activeStep, setActiveStep] = useState<number>(0);
 	const [showCompanyDetails, setShowCompanyDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
 	const { push } = useRouter();
 	const jobDetails = useAppSelector(selectJobDetails);
-	const [throttledCountry, setThrottledCountry] = useState(jobDetails?.country || "");
 
 	const {
 		handleSubmit,
@@ -108,15 +104,8 @@ const PostJob = () => {
 		push("/");
 	};
 
-	useEffect(() => {
-		const values = [title, jobUrl, location, description, country];
-		const filledValues = values.filter((item) => item);
-		setActiveStep(filledValues.length);
-	}, [title, jobUrl, location, description, country]);
-
 	return (
 		<section className={styles["post-job-page"]}>
-			<Stepper activeStep={activeStep} />
 			<section className={styles["post-job-page-form"]}>
 				<form>
 					<Input
@@ -124,7 +113,6 @@ const PostJob = () => {
 						errors={errors}
 						name={"jobTitle"}
 						label='Job title'
-						helpIcon
 						isRequired
 						placeholder='e.g. Web Developer'
 					/>
@@ -144,14 +132,12 @@ const PostJob = () => {
 							errors={errors}
 							name={"location"}
 							label='Job location'
-							helpIcon
 							isRequired
 							placeholder='City or state'
 						/>
 						<FormSelect
 							control={control}
 							countrySelect
-							helpIcon
 							name={"country"}
 							label={"Country"}
 							defaultValue={

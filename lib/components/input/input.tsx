@@ -21,7 +21,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 	control?: any;
 	errors?: any;
 	className?: string | undefined;
-  onChangeHandler?: any;
+	onChangeHandler?: any;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -39,7 +39,7 @@ const Input: React.FC<InputProps> = ({
 	control,
 	errors,
 	className,
-  onChangeHandler
+	onChangeHandler,
 }) => {
 	return (
 		<section className={styles["custom-input-container"]}>
@@ -69,18 +69,15 @@ const Input: React.FC<InputProps> = ({
 								: `${styles["custom-input"]} ${className ? styles[className] : ""}`
 						}
 						placeholder={placeholder}
-            {...{ onBlur, value, name, ref }}
+						{...{ onBlur, value, name, ref }}
 						type={type || "text"}
-            onChange={
-              (e)=>{
-                let newValue = e.target.value;
-                if(onChangeHandler){
-                  newValue = onChangeHandler(newValue);
-                }
-                onChange(newValue);
-
-              }
-            }
+						onChange={(e) => {
+							let newValue = e.target.value;
+							if (onChangeHandler) {
+								newValue = onChangeHandler(newValue);
+							}
+							onChange(newValue);
+						}}
 					/>
 				)}
 			/>

@@ -6,7 +6,7 @@ import { SORTBY } from "@/lib/constant/constants";
 import bg from "@/public/images/green-bg-search.svg";
 import styles from "./jobsListPage.module.scss";
 import JobItem from "../../lib/components/jobItem/jobItem";
-import { JobData } from "@/lib/types/componentTypes";
+import { JobData, optionItems } from "@/lib/types/componentTypes";
 import { uniqueArray } from "@/lib/utils/uniqueArray/uniqueArray";
 import { redirect } from "next/navigation";
 
@@ -54,10 +54,12 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	});
 	const jobs = await getData(params);
 	const options = await getOptions();
-	const locations = options.map((item: JobData) => ({
-		id: item._id,
-		label: item.location,
-	}));
+	const locations = options.map(
+		(item: JobData): optionItems => ({
+			id: item._id!,
+			label: item.location,
+		}),
+	);
 	const specializations = options.map((item: JobData) => ({
 		id: item._id,
 		label: item.jobTitle,
@@ -66,11 +68,16 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 		id: item._id,
 		label: item.workType,
 	}));
-	const salary = options.map((item: JobData) => ({
-		id: item._id,
-		label: item.salary,
-	}));
-
+	const salary = options
+		.map((item: JobData) => {
+			if (item.salary) {
+				return {
+					id: item._id,
+					label: item.salary,
+				};
+			}
+		})
+		.filter((item: any) => item !== undefined);
 	const defaultLocation = uniqueArray(locations)?.find(
 		(item) => item.label == searchParams?.location,
 	);
