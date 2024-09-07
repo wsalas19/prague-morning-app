@@ -8,11 +8,18 @@ import { useRouter } from "next/navigation";
 import Button from "@/lib/components/button/button";
 import Footer from "@/app/footer";
 import TopHeader from "@/lib/components/header/header";
+import Head from "next/head";
 
 const Home = () => {
 	const { push } = useRouter();
+	document.title = "Joobly | Home";
 	return (
 		<section className={styles["page-main"]}>
+			<Head>
+				<title>Joobly | Home</title>
+				<meta name='description' content='Joobly | Home' />
+				<meta name='keywords' content='Joobly | Home' />
+			</Head>
 			<TopHeader />
 			<div className={styles["sections"]}>
 				<div className={styles["offers"]}>
