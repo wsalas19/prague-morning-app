@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import jobSeekers from "@/public/images/job-seekers.svg";
 import jobPosters from "@/public/images/job-posters.svg";
 import styles from "./homePage.module.scss";
@@ -12,7 +12,9 @@ import Head from "next/head";
 
 const Home = () => {
 	const { push } = useRouter();
-	document.title = "Joobly | Home";
+	useEffect(() => {
+		document.title = "Joobly | Home";
+	}, []);
 	return (
 		<section className={styles["page-main"]}>
 			<Head>

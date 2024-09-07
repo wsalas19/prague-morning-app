@@ -56,21 +56,23 @@ const TopHeader = () => {
 					{user ? (
 						<Button
 							style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
+							onClick={() => {
+								localStorage.removeItem("token");
+								window.location.reload();
+							}}
+							className='btn btn-green-outlined'
+						>
+							Log Out
+						</Button>
+					) : (
+						<Button
+							style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
 							onClick={() => push("/login")}
 							className='btn btn-green-outlined'
 						>
 							Log in
 						</Button>
-					) : <Button
-					style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
-					onClick={() => {
-						localStorage.removeItem("token");
-						
-					}}
-					className='btn btn-green-outlined'
-				>
-					Log Out
-				</Button>}
+					)}
 				</div>
 			</div>
 		</div>
