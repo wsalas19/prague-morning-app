@@ -1,27 +1,24 @@
-"use client";
 import React, { useEffect } from "react";
 import jobSeekers from "@/public/images/job-seekers.svg";
 import jobPosters from "@/public/images/job-posters.svg";
 import styles from "./homePage.module.scss";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+
 import Button from "@/lib/components/button/button";
 import Footer from "@/app/footer";
 import TopHeader from "@/lib/components/header/header";
-import Head from "next/head";
+import { Metadata } from "next";
+import Link from "next/link";
+
+export const metadata: Metadata = {
+	title: "Joobly | Home",
+	description: "Joobly | Home",
+	keywords: "Joobly | Home",
+};
 
 const Home = () => {
-	const { push } = useRouter();
-	useEffect(() => {
-		document.title = "Joobly | Home";
-	}, []);
 	return (
 		<section className={styles["page-main"]}>
-			<Head>
-				<title>Joobly | Home</title>
-				<meta name='description' content='Joobly | Home' />
-				<meta name='keywords' content='Joobly | Home' />
-			</Head>
 			<TopHeader />
 			<div className={styles["sections"]}>
 				<div className={styles["offers"]}>
@@ -31,13 +28,14 @@ const Home = () => {
 						<p className={styles["desc"]}>
 							Find steady work, near you. Any industry. Any experience level. Easy.
 						</p>
-						<Button
-							style={{ minHeight: "64px" }}
-							onClick={() => push("/jobs")}
-							className={`${styles["btn"]} ${styles["btn-main-purple"]}`}
-						>
-							Get a job now
-						</Button>
+						<Link href={"/jobs"}>
+							<Button
+								style={{ minHeight: "64px" }}
+								className={`${styles["btn"]} ${styles["btn-main-purple"]}`}
+							>
+								Get a job now
+							</Button>
+						</Link>
 						<div className={styles["listings__posting-image"]}>
 							<Image
 								src={jobSeekers}
@@ -56,13 +54,14 @@ const Home = () => {
 						<p className={styles["desc"]}>
 							Drive candidates to your career site and convert them into applicants.
 						</p>
-						<Button
-							style={{ minHeight: "64px" }}
-							onClick={() => push("/post-job-info")}
-							className={`${styles["btn"]} ${styles["btn-main-primary"]}`}
-						>
-							Post Your Job
-						</Button>
+						<Link href={"/jobs"}>
+							<Button
+								style={{ minHeight: "64px" }}
+								className={`${styles["btn"]} ${styles["btn-main-primary"]}`}
+							>
+								Post Your Job
+							</Button>
+						</Link>
 						<div className={styles["listings__posting-image"]}>
 							<Image
 								src={jobPosters}

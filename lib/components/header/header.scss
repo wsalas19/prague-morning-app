@@ -2,8 +2,8 @@
 @import "@/lib/styles/variables.scss";
 
 .header {
+	zoom: 0.9;
 	background: $light;
-	padding: 0 370px;
 	.header-top {
 		height: 107px;
 		display: flex;
