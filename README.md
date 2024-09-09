@@ -1,3 +1,5 @@
+# Prague Morning Job Portal
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -20,17 +22,35 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
-## Learn More
+A modern job portal built with Next.js, designed to connect employers and job seekers in the Prague area.
 
-To learn more about Next.js, take a look at the following resources:
+## Project Overview
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This job portal provides a platform for employers to post job listings and for job seekers to find and apply for positions. The project utilizes a robust tech stack to deliver a seamless user experience with features like job posting, application management, and user profiles.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Tech Stack
 
-## Deploy on Vercel
+- **Frontend**: Next.js 14, React 18
+- **Styling**: SASS, Tailwind CSS
+- **State Management**: Redux Toolkit
+- **UI Components**: Material-UI (MUI)
+- **Form Handling**: React Hook Form
+- **API Requests**: Axios
+- **Database**: MongoDB with Mongoose
+- **Authentication**: (Not specified in the provided files, but likely implemented)
+- **Payment Integration**: Stripe
+- **Rich Text Editing**: CKEditor 5
+- **Date Handling**: Moment.js
+- **File Upload**: React Dropzone
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Key Features
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Job posting and management
+- User profiles for both employers and job seekers
+- Advanced search and filtering options
+- Responsive design for mobile and desktop
+- Subscription plans (Bronze, Silver, Gold) with different feature sets
+- Payment processing for job postings and premium features
+- Internationalization support (multiple currencies and countries)
+
+This project aims to streamline the job search and hiring process in Prague, offering a comprehensive solution for the local job market.

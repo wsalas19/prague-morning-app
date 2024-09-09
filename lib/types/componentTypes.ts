@@ -78,3 +78,8 @@ export type PlanContainerDataType = {
 	planPrice: number;
 	isActive: boolean;
 };
+
+export type ServicePlanType = {
+	title: string;
+	price: number;
+};

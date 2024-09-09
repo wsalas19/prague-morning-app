@@ -1,45 +1,60 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import styles from "./paymentContainer.module.scss";
 import Paper from "@/lib/components/paper/Paper";
 import PaymentForm from "@/lib/components/payment/paymentContainer/paymentForm/paymentForm";
-import {useForm} from "react-hook-form";
+import { useForm } from "react-hook-form";
 import Button from "@/lib/components/button/button";
 import Divider from "@/lib/components/devider/divider";
-import {useRouter} from "next/navigation";
+import { useRouter } from "next/navigation";
 import PaymentMethodContainer from "@/lib/components/payment/paymentContainer/paymentMethodContainer/paymentMethodContainer";
+import { PaymentElement, useStripe, useElements } from "@stripe/react-stripe-js";
+import Image from "next/image";
+import { ServicePlanType } from "@/lib/types/componentTypes";
 
-interface Inputs {
-  cardNumber: string;
-  expireDate: string;
-  cardOwnerName:string,
-  cvvCode:string
+const PaymentContainer = (props: ServicePlanType) => {
+	/* const [isCard, setIsCard] = useState<boolean>(false);
+	const [isPayPal, setIsPayPal] = useState<boolean>(true); */
+	const { refresh, replace } = useRouter();
 
-}
-interface PaymentContainer{
-  servicePlan:number
-}
-const PaymentContainer = ({servicePlan}:PaymentContainer) => {
-  const [isCard, setIsCard] = useState<boolean>(false)
-  const [isPayPal, setIsPayPal] = useState<boolean>(true)
-  const {refresh,replace}=useRouter()
-  const {
-    control,
-    formState: {errors},
-    handleSubmit
-  } = useForm<Inputs>()
+	/* const {
+		control,
+		formState: { errors },
+		handleSubmit,
+	} = useForm<Inputs>(); */
 
-  const onSubmit = (values:Inputs) => {
-    replace("/jobs")
-    refresh()
-  }
-  return (
-    <section className={styles["payment-container"]}>
-      <div className={styles["payment-container__labels"]}>
-        <label className={styles["payment-container__labels__label"]}>Payment Method<span>*</span></label>
-        <label className={styles["payment-container__labels__subLabel"]}>Choose the method payment that suits your
-          needs</label>
-      </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+	const handleSubmit = async () => {
+		try {
+			const session = await fetch("/api/checkout", {
+				method: "POST",
+				body: JSON.stringify({
+					title: props.title,
+					price: props.price,
+				}),
+			});
+
+			const data = await session.json();
+			window.location.href = data.session.url;
+			/* replace("/jobs");
+			refresh(); */
+		} catch (error: unknown) {
+			console.log(error);
+		}
+	};
+	return (
+		<section className={styles["payment-container"]}>
+			<div className={styles["payment-container__labels"]}>
+				<label className={styles["payment-container__labels__label"]}>
+					Checkout<span>*</span>
+				</label>
+				<label className={styles["payment-container__labels__subLabel"]}>
+					Go to secure payment page powered by{" "}
+					<Image src={"/images/logos/stripe.svg"} alt='stripe' width={70} height={70} />
+				</label>
+				<Button style={{ width: "100%" }} className={"btn-primary"} onClick={handleSubmit}>
+					Go to Pay
+				</Button>
+			</div>
+			{/* <form onSubmit={handleSubmit(onSubmit)}>
         <div className={styles["payment-container__wrapper"]}>
           <Paper style={{width: "100%"}}>
         <PaymentMethodContainer isPayPal={isPayPal} isCard={isCard} setIsPayPal={setIsPayPal} setIsCard={setIsCard}/>
@@ -68,9 +83,9 @@ const PaymentContainer = ({servicePlan}:PaymentContainer) => {
 
           </Paper>
         </div>
-      </form>
-    </section>
-  );
+      </form> */}
+		</section>
+	);
 };
 
 export default PaymentContainer;
