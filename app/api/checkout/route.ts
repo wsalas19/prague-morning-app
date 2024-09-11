@@ -3,8 +3,13 @@ import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_API_KEY!);
 
+const envMode = process.env.NEXT_PUBLIC_ENV_MODE;
+
 export async function POST(req: Request) {
 	const body = await req.json();
+
+	const successUrl =
+		envMode === "development" ? "http://localhost:3000/success" : "https://www.joobly.cz/success";
 
 	try {
 		const session = await stripe.checkout.sessions.create({
@@ -21,7 +26,7 @@ export async function POST(req: Request) {
 					quantity: 1,
 				},
 			],
-			success_url: "http://localhost:3000/success",
+			success_url: successUrl,
 		});
 		return NextResponse.json({ session });
 	} catch (error: unknown) {
