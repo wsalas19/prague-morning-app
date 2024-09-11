@@ -13,8 +13,8 @@ export type ButtonProps = {
 };
 
 export interface optionItems {
-	id: string | number;
-	label: string;
+	id: string;
+	label: string | number;
 }
 
 export type DropdownProps = {
@@ -23,10 +23,7 @@ export type DropdownProps = {
 	style?: React.CSSProperties;
 	className?: string;
 	icon?: any;
-	items: {
-		id: number | string;
-		label: string;
-	}[];
+	items: optionItems[];
 	headerTitle: string;
 	defaultSelected?: number | string;
 };
@@ -83,3 +80,12 @@ export type ServicePlanType = {
 	title: string;
 	price: number;
 };
+export interface JobsPagePropsTypes {
+	params?: { value: string | number };
+	searchParams?: {
+		location: string | undefined;
+		jobTitle: string | undefined;
+		workType: string | undefined;
+		salary: string | undefined;
+	};
+}
