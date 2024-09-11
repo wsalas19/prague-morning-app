@@ -1,20 +1,50 @@
-import React, { useLayoutEffect } from "react";
-import Image from "next/image";
+import React, { Suspense } from "react";
 import Topbar from "../../lib/components/toolBar/topbar";
 import Dropdown from "@/lib/components/dropdown/dropdown";
 import { SORTBY } from "@/lib/constant/constants";
-import bg from "@/public/images/green-bg-search.svg";
 import styles from "./jobsListPage.module.scss";
 import JobItem from "../../lib/components/jobItem/jobItem";
-import { JobData, optionItems } from "@/lib/types/componentTypes";
+import { JobData, JobsPagePropsTypes, optionItems } from "@/lib/types/componentTypes";
 import { uniqueArray } from "@/lib/utils/uniqueArray/uniqueArray";
-import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
+async function processOptions(options: JobData[]) {
+	const processedOptions = options.reduce(
+		(acc, item) => {
+			if (item.location) {
+				acc.locations.push({ id: item._id!, label: item.location });
+			}
+			if (item.jobTitle) {
+				acc.specializations.push({ id: item._id!, label: item.jobTitle });
+			}
+			if (item.workType) {
+				acc.workTypes.push({ id: item._id!, label: item.workType });
+			}
+			if (item.salary) {
+				acc.salaries.push({ id: item._id!, label: item.salary as string });
+			}
+			return acc;
+		},
+		{
+			locations: [] as optionItems[],
+			specializations: [] as optionItems[],
+			workTypes: [] as optionItems[],
+			salaries: [] as optionItems[],
+		},
+	);
+
+	return {
+		locations: uniqueArray(processedOptions.locations),
+		specializations: uniqueArray(processedOptions.specializations),
+		workTypes: uniqueArray(processedOptions.workTypes),
+		salaries: uniqueArray(processedOptions.salaries),
+	};
+}
+
 async function getData(params: any) {
 	const res = await fetch(`https://prague-morning-backend.vercel.app/api/jobs?${params}`, {
-		cache: "no-store",
+		next: { revalidate: 60 },
 	});
 	if (!res) {
 		throw new Error("Failed to fetch data");
@@ -25,7 +55,7 @@ async function getData(params: any) {
 
 async function getOptions() {
 	const res = await fetch(`https://prague-morning-backend.vercel.app/api/job-options`, {
-		cache: "no-store",
+		next: { revalidate: 60 },
 	});
 
 	if (!res.ok) {
@@ -35,16 +65,6 @@ async function getOptions() {
 	return res.json();
 }
 
-interface JobsPagePropsTypes {
-	params?: { value: string | number };
-	searchParams?: {
-		location: string | undefined;
-		jobTitle: string | undefined;
-		workType: string | undefined;
-		salary: string | undefined;
-	};
-}
-
 const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 	const params = new URLSearchParams({
 		location: searchParams?.location || "",
@@ -52,42 +72,14 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 		workType: searchParams?.workType || "",
 		salary: searchParams?.salary || "",
 	});
-	const jobs = await getData(params);
-	const options = await getOptions();
-	const locations = options.map(
-		(item: JobData): optionItems => ({
-			id: item._id!,
-			label: item.location,
-		}),
-	);
-	const specializations = options.map((item: JobData) => ({
-		id: item._id,
-		label: item.jobTitle,
-	}));
-	const workType = options.map((item: JobData) => ({
-		id: item._id,
-		label: item.workType,
-	}));
-	const salary = options
-		.map((item: JobData) => {
-			if (item.salary) {
-				return {
-					id: item._id,
-					label: item.salary,
-				};
-			}
-		})
-		.filter((item: any) => item !== undefined);
-	const defaultLocation = uniqueArray(locations)?.find(
-		(item) => item.label == searchParams?.location,
-	);
-	const defaultJobTitle = uniqueArray(specializations)?.find(
-		(item) => item.label == searchParams?.jobTitle,
-	);
-	const defaultWorkType = uniqueArray(workType)?.find(
-		(item) => item.label == searchParams?.workType,
-	);
-	const defaultSalary = uniqueArray(salary)?.find((item) => item.label == searchParams?.salary);
+	const [jobs, options] = await Promise.all([getData(params), getOptions()]);
+
+	const { locations, specializations, workTypes, salaries } = await processOptions(options);
+
+	const defaultLocation = locations.find((item) => item.label === searchParams?.location);
+	const defaultJobTitle = specializations.find((item) => item.label === searchParams?.jobTitle);
+	const defaultWorkType = workTypes.find((item) => item.label === searchParams?.workType);
+	const defaultSalary = salaries.find((item) => item.label === searchParams?.salary);
 
 	return (
 		<section className={styles["page-jobs"]}>
@@ -98,10 +90,10 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 					defaultJobTitle={defaultJobTitle?.id}
 					defaultWorkType={defaultWorkType?.id}
 					defaultSalary={defaultSalary?.id}
-					specializations={uniqueArray(specializations)}
-					locations={uniqueArray(locations)}
-					workType={uniqueArray(workType)}
-					salary={uniqueArray(salary)}
+					locations={locations}
+					specializations={specializations}
+					workType={workTypes}
+					salary={salaries}
 				/>
 				<div className={styles["content"]}>
 					<div className={styles["results"]}>
@@ -111,7 +103,7 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 						<div className={styles["results-sort"]}>
 							<p className='font-sans'>Sort by:</p>
 							<Dropdown
-								items={SORTBY}
+								items={SORTBY.map((item) => ({ id: item.id.toString(), label: item.label }))}
 								headerTitle='Newest'
 								className='dropdown-sort'
 								defaultSelected={0}
@@ -120,10 +112,11 @@ const Jobs = async ({ searchParams }: JobsPagePropsTypes) => {
 					</div>
 
 					<div className={styles["results-data"]}>
-						{jobs &&
-							Array.isArray(jobs) &&
-							jobs?.length > 0 &&
-							jobs?.map((result: any) => <JobItem data={result} key={result._id} />)}
+						<Suspense fallback={<div>Loading...</div>}>
+							{jobs.jobs
+								? jobs.jobs?.map((result: any) => <JobItem data={result} key={result._id} />)
+								: null}
+						</Suspense>
 					</div>
 
 					<div className={styles["join-us"]}>
