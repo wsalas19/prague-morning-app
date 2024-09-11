@@ -21,6 +21,7 @@ export async function POST(req: Request) {
 					quantity: 1,
 				},
 			],
+			success_url: "http://localhost:3000/success",
 		});
 		return NextResponse.json({ session });
 	} catch (error: unknown) {
