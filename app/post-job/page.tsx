@@ -39,7 +39,12 @@ interface Inputs {
 	jobUrl: string;
 	education: string;
 }
-const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), { ssr: false });
+const TextEditor = dynamic(() => import("@/lib/components/textEditor/TextEditor"), {
+	ssr: false,
+	loading: () => {
+		return <div className='font-semibold text-primary'>Loading...</div>;
+	},
+});
 const PostJob = () => {
 	const [showCompanyDetails, setShowCompanyDetails] = useState<boolean>(false);
 	const dispatch = useAppDispatch();
@@ -62,17 +67,18 @@ const PostJob = () => {
 	const jobUrl = watch("jobUrl");
 	const location = watch("location");
 	const description = watch("description");
+
 	const country = watch("country");
 	const createDataForJob = (values: Inputs) => {
 		return {
-			jobTitle: values.jobTitle,
-			jobUrl: values.jobUrl,
-			description: values.description,
-			location: values.location,
+			jobTitle: title,
+			jobUrl: jobUrl,
+			description: description,
+			location: location,
 			salary: values.salary,
 			currency: values.currency,
 			salaryDetail: values.salaryDetail,
-			jobRole: values.jobTitle,
+			jobRole: title,
 			workType: values.workType,
 			jobTime: values.jobTime,
 			country: values?.country,
@@ -141,7 +147,7 @@ const PostJob = () => {
 							name={"country"}
 							label={"Country"}
 							defaultValue={
-								jobDetails?.country || {
+								country || {
 									code: "US",
 									label: "United States",
 									phone: "1",
