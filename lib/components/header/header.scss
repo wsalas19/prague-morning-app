@@ -67,6 +67,10 @@
 					background-repeat: no-repeat;
 				}
 			}
+			.header-post-packages {
+				color: $base-black-50;
+				position: relative;
+			}
 		}
 		.post-btn-group {
 			display: flex;
@@ -87,6 +91,10 @@
 			}
 		}
 	}
+}
+
+.package-image {
+	filter: invert(52%) sepia(2%) saturate(6%) hue-rotate(222deg) brightness(96%) contrast(92%);
 }
 
 @media screen and (max-width: 800px) {

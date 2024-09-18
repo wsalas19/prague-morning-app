@@ -89,3 +89,9 @@ export interface JobsPagePropsTypes {
 		salary: string | undefined;
 	};
 }
+export type PackageType = {
+	title: string;
+	percent: string;
+	value: string;
+	active: boolean;
+};

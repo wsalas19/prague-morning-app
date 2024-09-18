@@ -31,6 +31,16 @@ const TopHeader = () => {
 					<Link href='/post-job-info' className='header-post-post'>
 						Post a job
 					</Link>
+					<Link href='/packages' className=' flex items-center gap-1 text-[#b8b9b9] ml-[-2rem]'>
+						<Image
+							className='package-image'
+							src={"/images/icons/package-icon.svg"}
+							width={26}
+							height={26}
+							alt='packages'
+						/>
+						Packages
+					</Link>
 				</div>
 				<div className='post-btn-group'>
 					<Link href={"/contact"}>
