@@ -668,3 +668,23 @@ export const POST_PACKAGES_ACTIONS = [
 	"It is a long established fact that a reader will be distracted. ",
 	"Contrary to popular belief,  Lorem Ipsum is not simply random text. It has roots in a piece.",
 ];
+export const PACKAGES = [
+	{
+		title: "5 Job Postings",
+		percent: "30% Rebate",
+		value: "275.00 CZK",
+		active: true,
+	},
+	{
+		title: "10 Job Postings",
+		percent: "40% Rebate",
+		value: "390.00 CZK",
+		active: false,
+	},
+	{
+		title: "15 Job Postings",
+		percent: "50% Rebate",
+		value: "650.00 CZK",
+		active: false,
+	},
+];

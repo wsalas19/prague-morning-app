@@ -21,7 +21,8 @@ const PlanContainer = ({
 		<Paper
 			style={{
 				background: title === "Gold" ? "#1D2427" : "#F6F8F9",
-				height: "fit-content",
+				height: "55rem",
+				width: "30%",
 				border: isActive ? " 2px solid #009C77" : "unset",
 			}}
 		>
@@ -36,20 +37,24 @@ const PlanContainer = ({
 						{title}
 					</h1>
 				</div>
-				<p className={styles["plan-container__sub-title"]}>Perfect plan to get started</p>
+				<p className={styles["plan-container__sub-title"]}>
+					{title === "Bronze" ? "Perfect plan to get started" : "Paid plan with features"}
+				</p>
 				<p
 					className={`${styles["plan-container__plan-per-month"]} ${
 						title === "Gold" && styles["gold-plan"]
 					}`}
 				>
-					${planPrice} CZK /month
+					{planPrice} CZK /month
 				</p>
 				<p
 					className={`${styles["plan-container__plan-description"]}  ${
 						title === "Gold" && styles["gold-plan"]
 					}`}
 				>
-					The free plan gives you access to some of the great features of Gostart.
+					{title === "Bronze"
+						? "The free plan gives you access to some of the great features of Gostart."
+						: null}
 				</p>
 				<PlanPermissions title={title} data={data} />
 				<div className={styles["plan-container__submit"]}>

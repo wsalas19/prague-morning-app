@@ -6,13 +6,14 @@ import Image from "next/image";
 import percent_icon from "../../../public/images/icons/discount.svg";
 import value_icon from "../../../public/images/icons/dollar-circle.svg";
 import ellipse from "../../../public/images/icons/Ellipse.svg";
+import { PackageType } from "@/lib/types/componentTypes";
 
 interface PackageCheckboxProps {
 	title: string;
 	percent: string;
 	value: string;
 	checked: boolean;
-	onChange: (title: string, checked: boolean) => void;
+	onChange: (packageInfo: PackageType) => void;
 }
 
 const PackagesCheckbox = ({ title, percent, value, checked, onChange }: PackageCheckboxProps) => {
@@ -22,7 +23,10 @@ const PackagesCheckbox = ({ title, percent, value, checked, onChange }: PackageC
 		>
 			<div className={styles["packages-checkbox__checkboxes__checkbox"]}>
 				<div className={styles["packages-checkbox__image-label-wrapper"]}>
-					<RadioCheckbox checked={checked} onChange={(e) => onChange(title, e.target.checked)} />
+					<RadioCheckbox
+						checked={checked}
+						onChange={(e) => onChange({ title, percent, value, active: checked })}
+					/>
 					<label>{title}</label>
 				</div>
 			</div>
@@ -56,12 +60,7 @@ const PackagesCheckbox = ({ title, percent, value, checked, onChange }: PackageC
 
 			<div className={styles["packages-checkbox__checkboxes__checkbox"]}>
 				<div className={styles["packages-checkbox__image-label-wrapper"]}>
-					<Image
-						className={styles["packages-checkbox__image"]}
-						src={value_icon}
-						alt='value_icon'
-						
-					/>
+					<Image className={styles["packages-checkbox__image"]} src={value_icon} alt='value_icon' />
 					<label>{value}</label>
 				</div>
 			</div>
