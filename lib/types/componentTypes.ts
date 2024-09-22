@@ -95,3 +95,15 @@ export type PackageType = {
 	value: string;
 	active: boolean;
 };
+export type UserMenuProps = {
+	items: {
+		id: string;
+		label: string;
+		path: string;
+	}[];
+	user: {
+		token: string;
+		username: string;
+		email: string;
+	};
+};
