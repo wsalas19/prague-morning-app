@@ -1,36 +1,55 @@
 "use client";
-import React from "react";
+import Link from "next/link";
 import Button from "../button/button";
-import { useAppSelector } from "@/lib/hooks";
-import { useRouter } from "next/navigation";
+import UserMenu from "./userMenu";
+import { useEffect, useState } from "react";
 
 const LoginBtn = () => {
-	const { push } = useRouter();
-	const user = useAppSelector((state) => state.user.user);
+	const [user, setUser] = useState(null);
+
+	useEffect(() => {
+		const storedUser = localStorage.getItem("user");
+		if (storedUser) {
+			setUser(JSON.parse(storedUser));
+		}
+	}, []);
 	return (
 		<>
 			{user ? (
-				<Button
-					style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
-					onClick={() => {
-						localStorage.removeItem("token");
-						window.location.reload();
-					}}
-					className='btn btn-green-outlined'
-				>
-					Log Out
-				</Button>
+				<UserMenu
+					user={user}
+					items={[
+						{ id: "1", label: "Profile", path: "/profile" },
+						{ id: "2", label: "Jobs", path: "/jobs" },
+						{ id: "3", label: "Log Out", path: "/" },
+					]}
+				/>
 			) : (
-				<Button
-					style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
-					onClick={() => push("/login")}
-					className='btn btn-green-outlined'
-				>
-					Log in
-				</Button>
+				<Link href='/login'>
+					<Button
+						style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
+						className='btn btn-green-outlined'
+					>
+						Log in
+					</Button>
+				</Link>
 			)}
 		</>
 	);
 };
 
 export default LoginBtn;
+
+{
+	/* <Button
+					style={{ maxWidth: "227px", height: "62px", borderRadius: "18px", gap: "10px" }}
+					onClick={() => {
+						localStorage.removeItem("token");
+						localStorage.removeItem("user");
+						window.location.reload();
+					}}
+					className='btn btn-green-outlined'
+				>
+					Log Out
+				</Button> */
+}

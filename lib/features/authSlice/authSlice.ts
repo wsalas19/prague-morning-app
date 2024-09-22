@@ -67,6 +67,7 @@ export const userSlice = createSlice({
 			console.log("enter", action.payload);
 
 			localStorage.setItem("token", JSON.stringify(action.payload.token));
+			localStorage.setItem("user", JSON.stringify(action.payload.user));
 		});
 		builder.addCase(signIn.rejected, (state, action) => {
 			state.user = null; // Clear the user data
